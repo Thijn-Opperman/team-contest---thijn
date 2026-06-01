@@ -115,9 +115,9 @@ function HeaderCurve({
   title: string;
 }) {
   return (
-    <div className="relative h-[95px] w-full shrink-0">
+    <div className="relative h-[78px] w-full shrink-0">
       <div
-        className="absolute inset-x-[-12px] top-0 flex h-[82px] items-center justify-center px-16 text-center shadow-lg"
+        className="absolute inset-x-[-12px] top-0 flex h-[68px] items-center justify-center px-16 text-center shadow-lg"
         style={{
           background: color,
           borderBottom: `4px solid ${shadow}`,
@@ -125,7 +125,7 @@ function HeaderCurve({
           borderBottomRightRadius: "48% 18px",
         }}
       >
-        <h1 className="text-[22px] font-black leading-tight text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.28)]">
+        <h1 className="text-[20px] font-black leading-tight text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.28)]">
           {title}
         </h1>
       </div>
@@ -187,7 +187,7 @@ export function TeamWelcomeScreen() {
       background={background}
       style={{ opacity: hydrated ? 1 : 0, transition: "opacity 0.3s ease" }}
     >
-      <div className="flex min-h-full flex-1 flex-col items-center px-5">
+      <div className="flex h-full min-h-0 flex-col items-center px-5">
         <HeaderCurve
           color={headerColor}
           shadow={headerShadow}
@@ -195,7 +195,7 @@ export function TeamWelcomeScreen() {
         />
 
         {/* Celebrating mascot with curved highlight behind it. */}
-        <div className="relative -mt-1 flex h-[220px] w-full items-center justify-center">
+        <div className="relative -mt-1 flex h-[174px] w-full items-center justify-center">
           <Sparkle
             size={28}
             className="absolute left-10 top-8"
@@ -214,14 +214,14 @@ export function TeamWelcomeScreen() {
             color={isBlue ? "#BDEEFF" : "#E77B67"}
           />
           <div
-            className="absolute left-1/2 top-[30px] h-[150px] w-[330px] -translate-x-1/2 rounded-[50%]"
+            className="absolute left-1/2 top-[24px] h-[120px] w-[300px] -translate-x-1/2 rounded-[50%]"
             style={{ background: "rgba(255,255,255,0.20)" }}
           />
           <div className="duo-pop relative z-10">
             {/* CHARACTER_IMAGE: blue=Eddy / red=Junior, celebrating pose */}
             <CharacterPlaceholder
-              width={205}
-              height={220}
+              width={164}
+              height={176}
               tint="transparent"
               hint={`${team.mascot} celebrating`}
               src={characterSrc}
@@ -238,7 +238,7 @@ export function TeamWelcomeScreen() {
 
         {/* Assignment card */}
         <div
-          className="duo-rise mt-5 w-full rounded-xl px-4 py-4 text-center text-[15px] font-black text-white shadow-lg"
+          className="duo-rise mt-3 w-full rounded-xl px-4 py-3 text-center text-[14px] font-black text-white shadow-lg"
           style={{
             background: cardColor,
             borderBottom: `5px solid ${ribbonShadow}`,
@@ -249,11 +249,11 @@ export function TeamWelcomeScreen() {
         </div>
 
         {/* Feature list */}
-        <div className="mt-8 w-full space-y-6 px-3">
+        <div className="mt-5 w-full space-y-3 px-3">
           {FEATURES.map((f, i) => (
             <div
               key={f.label}
-              className="duo-rise flex items-center gap-4"
+              className="duo-rise flex items-center gap-3"
               style={{ animationDelay: `${360 + i * 90}ms` }}
             >
               <FeatureIcon type={f.icon} accent={iconAccent} />
@@ -265,7 +265,7 @@ export function TeamWelcomeScreen() {
         </div>
 
         {/* Footer CTA + secondary link */}
-        <div className="mt-auto flex w-full flex-col items-center gap-3 pt-8 pb-6">
+        <div className="mt-auto flex w-full flex-col items-center gap-2 pt-4 pb-4">
           <DuoButton onClick={goStandings}>Continue</DuoButton>
           <button
             type="button"

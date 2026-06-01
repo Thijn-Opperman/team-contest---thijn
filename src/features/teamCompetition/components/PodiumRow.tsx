@@ -11,7 +11,7 @@ interface PodiumAvatarProps {
   accentColor?: string;
 }
 
-const SIZES: Record<1 | 2 | 3, number> = { 1: 66, 2: 54, 3: 54 };
+const SIZES: Record<1 | 2 | 3, number> = { 1: 58, 2: 48, 3: 48 };
 const POP_DELAY: Record<1 | 2 | 3, number> = { 1: 120, 2: 0, 3: 240 };
 
 function Avatar({
@@ -63,7 +63,7 @@ export function PodiumRow({
     <div className="flex flex-col items-center">
       <div className="duo-pop relative" style={{ animationDelay: `${delay}ms` }}>
         {place === 1 && (
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xl drop-shadow-md">
+          <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-lg drop-shadow-md">
             👑
           </div>
         )}
@@ -79,13 +79,13 @@ export function PodiumRow({
         </span>
       </div>
       <div
-        className="duo-rise mt-2 text-center text-[13px] font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
+        className="duo-rise mt-1.5 text-center text-[12px] font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
         style={{ animationDelay: `${delay + 150}ms` }}
       >
         {entry.name}
       </div>
       <div
-        className="duo-rise text-[11px] font-black text-white/85 tabular-nums"
+        className="duo-rise text-[10px] font-black text-white/85 tabular-nums"
         style={{ animationDelay: `${delay + 220}ms` }}
       >
         +{formatXP(animatedXP)} XP

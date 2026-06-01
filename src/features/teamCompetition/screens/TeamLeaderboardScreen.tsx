@@ -39,7 +39,7 @@ export function TeamLeaderboardScreen({
 
   return (
     <ScreenShell background={background}>
-      <div className="flex min-h-full flex-1 flex-col px-5 pt-9">
+      <div className="flex h-full min-h-0 flex-col px-5 pt-7">
         <div className="duo-rise text-center">
           <div
             className="mx-auto inline-flex items-center rounded-full bg-white/18 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white"
@@ -47,7 +47,7 @@ export function TeamLeaderboardScreen({
           >
             Weekly leaderboard
           </div>
-          <h1 className="mt-3 text-[30px] font-black leading-tight text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.25)]">
+          <h1 className="mt-2 text-[28px] font-black leading-tight text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.25)]">
             {title}
           </h1>
           <p className="mt-1 text-sm font-black text-white/85">
@@ -55,9 +55,9 @@ export function TeamLeaderboardScreen({
           </p>
         </div>
 
-        <div className="relative mt-7 h-[190px] w-full">
+        <div className="relative mt-5 h-[158px] w-full">
           <div
-            className="absolute bottom-0 left-1/2 h-[74px] w-[82%] -translate-x-1/2 rounded-t-[1.75rem] border-2 border-white/20 bg-white/14 shadow-inner"
+            className="absolute bottom-0 left-1/2 h-[56px] w-[82%] -translate-x-1/2 rounded-t-[1.75rem] border-2 border-white/20 bg-white/14 shadow-inner"
             aria-hidden
           />
           <div
@@ -66,17 +66,17 @@ export function TeamLeaderboardScreen({
             aria-hidden
           />
           {second && (
-            <div className="absolute bottom-5 left-[7%] w-[27%]">
+            <div className="absolute bottom-3 left-[7%] w-[27%]">
               <PodiumRow entry={second} place={2} accentColor={accent} />
             </div>
           )}
           {first && (
-            <div className="absolute bottom-11 left-1/2 w-[34%] -translate-x-1/2">
+            <div className="absolute bottom-8 left-1/2 w-[34%] -translate-x-1/2">
               <PodiumRow entry={first} place={1} accentColor={accent} />
             </div>
           )}
           {third && (
-            <div className="absolute bottom-5 right-[7%] w-[27%]">
+            <div className="absolute bottom-3 right-[7%] w-[27%]">
               <PodiumRow entry={third} place={3} accentColor={accent} />
             </div>
           )}
@@ -86,7 +86,7 @@ export function TeamLeaderboardScreen({
           className="duo-rise mt-2 grid grid-cols-2 gap-3"
           style={{ animationDelay: "160ms" }}
         >
-          <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-3">
+          <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-2">
             <div className="text-[11px] font-black uppercase tracking-wide text-[#AFAFAF]">
               Team XP
             </div>
@@ -94,7 +94,7 @@ export function TeamLeaderboardScreen({
               {totalXP.toLocaleString("en-US")}
             </div>
           </div>
-          <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-3">
+          <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-2">
             <div className="text-[11px] font-black uppercase tracking-wide text-[#AFAFAF]">
               Reset
             </div>
@@ -102,7 +102,7 @@ export function TeamLeaderboardScreen({
           </div>
         </div>
 
-        <div className="duo-rise mt-4 rounded-3xl border-2 border-[#E5E5E5] bg-white p-3 shadow-lg">
+        <div className="duo-rise mt-3 rounded-3xl border-2 border-[#E5E5E5] bg-white p-3 shadow-lg">
           <div className="mb-3 flex items-center justify-between px-1">
             <span className="text-sm font-black text-[#4B4B4B]">
               Rankings
@@ -111,7 +111,7 @@ export function TeamLeaderboardScreen({
               {byRank.length} learners
             </span>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {byRank.map((entry, i) => (
               <div
                 key={`${entry.rank}-${entry.name}`}
@@ -124,7 +124,7 @@ export function TeamLeaderboardScreen({
           </div>
         </div>
 
-        <div className="mt-auto pt-7 pb-6">
+        <div className="mt-auto pt-3 pb-4">
           <DuoButton onClick={exitToHome}>Continue Learning</DuoButton>
         </div>
       </div>

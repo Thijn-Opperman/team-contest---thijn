@@ -42,14 +42,15 @@ export function useTeamNavigation() {
 
 /**
  * Modal-style wrapper for the whole flow. Centers the mobile "device" column on
- * larger screens, scrolls the active screen, and overlays a collapsible
- * top-right navigation menu so the user can hop between screens at any time.
+ * larger screens and overlays a collapsible top-right navigation menu so the
+ * user can hop between screens at any time. Screens are intentionally locked to
+ * one viewport: no vertical page scroll, like a mobile app screen.
  */
 export function TeamCompetitionNavigator({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-[100dvh] w-full justify-center bg-[#1c1b22] sm:py-6">
       <div className="relative flex h-[100dvh] w-full max-w-[420px] flex-col overflow-hidden bg-white shadow-2xl sm:h-[min(880px,calc(100dvh-48px))] sm:rounded-[2.25rem] sm:ring-8 sm:ring-black/70">
-        <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain">
+        <main className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
           {children}
         </main>
         <TopNav />

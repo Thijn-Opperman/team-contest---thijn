@@ -6,9 +6,7 @@ import { COLORS } from "@/src/features/teamCompetition/constants/teamColors";
 import { DuoButton } from "@/src/features/teamCompetition/components/DuoButton";
 
 /**
- * Main home tab. First-time visitors (no `hasBeenAssigned` flag) are sent
- * straight into the Team Competition flow; returning users get a colorful hub
- * showing their team with quick links into each screen.
+ * Minimal landing page for the Team Competition flow.
  */
 export default function Home() {
   const router = useRouter();
@@ -18,8 +16,8 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-[100dvh] flex-1 justify-center bg-[#F7F7F7]">
-      <div className="duo-screen-in flex w-full max-w-[420px] flex-col items-center justify-center px-6 pb-10 pt-10 text-center">
+    <main className="flex h-[100dvh] flex-1 justify-center overflow-hidden bg-[#F7F7F7]">
+      <div className="duo-screen-in flex h-full w-full max-w-[420px] flex-col items-center justify-center px-6 pb-10 pt-10 text-center">
         <div
           className="duo-rise relative flex h-64 w-64 items-center justify-center rounded-full"
           style={{

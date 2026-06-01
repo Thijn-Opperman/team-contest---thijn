@@ -9,8 +9,9 @@ interface ScreenShellProps {
 }
 
 /**
- * Full-bleed colored surface for a single screen. Fills the scrollable content
- * area provided by the navigator (which owns the device column + bottom nav).
+ * Full-bleed colored surface for a single screen. It fills exactly one mobile
+ * viewport inside the navigator, so screens behave like app pages instead of
+ * long web pages.
  */
 export function ScreenShell({
   background,
@@ -19,13 +20,8 @@ export function ScreenShell({
   style,
 }: ScreenShellProps) {
   return (
-    // NOTE: no `flex-1` and no vertical `overflow-hidden` here. As a flex child,
-    // `overflow-hidden` would force min-height:0 and let the panel shrink below
-    // its content (clipping the CTA behind the nav). Instead we use `min-h-full`
-    // so short screens fill the viewport while tall screens grow and let the
-    // parent <main> scroll. `overflow-x-clip` keeps decorative blobs in bounds.
     <div
-      className={`relative flex min-h-full w-full flex-col overflow-x-clip ${className}`}
+      className={`relative flex h-full min-h-0 w-full flex-col overflow-hidden ${className}`}
       style={{ background, ...style }}
     >
       {children}
