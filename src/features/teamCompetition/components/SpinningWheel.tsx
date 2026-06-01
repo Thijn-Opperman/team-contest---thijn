@@ -122,28 +122,50 @@ export function SpinningWheel({
       aria-label={`Spinning wheel selecting ${assignedTeam} team`}
       role="img"
     >
-      {/* Gold pointer at the top, pointing down into the wheel */}
-      <div className="absolute left-1/2 z-20" style={{ top: -6 }}>
+      {/* Clean top pointer: no pill/bar, just a compact gold marker. */}
+      <div className="absolute left-1/2 z-20" style={{ top: -8 }}>
         <div
+          className="relative"
           style={{
             width: 0,
             height: 0,
             transform: "translateX(-50%)",
-            borderLeft: "16px solid transparent",
-            borderRight: "16px solid transparent",
-            borderTop: `26px solid ${COLORS.gold}`,
-            filter: "drop-shadow(0 3px 2px rgba(0,0,0,0.25))",
+            borderLeft: "20px solid transparent",
+            borderRight: "20px solid transparent",
+            borderTop: `32px solid ${COLORS.gold}`,
+            filter: "drop-shadow(0 5px 2px rgba(0,0,0,0.26))",
           }}
-        />
+        >
+          <span
+            className="absolute"
+            style={{
+              left: -12,
+              top: -29,
+              width: 0,
+              height: 0,
+              borderLeft: "12px solid transparent",
+              borderRight: "12px solid transparent",
+              borderTop: "19px solid rgba(255,255,255,0.42)",
+            }}
+          />
+        </div>
       </div>
 
       {/* Outer gold ring + drop shadow */}
       <div
         className="absolute inset-0 rounded-full"
         style={{
-          background: COLORS.gold,
+          background: `radial-gradient(circle at 35% 30%, #FFF17A 0%, ${COLORS.gold} 62%, ${COLORS.goldDark} 100%)`,
           boxShadow:
-            "0 10px 24px rgba(0,0,0,0.35), inset 0 -6px 0 rgba(0,0,0,0.12)",
+            "0 12px 24px rgba(0,0,0,0.32), inset 0 5px 0 rgba(255,255,255,0.42), inset 0 -8px 0 rgba(0,0,0,0.12)",
+        }}
+      />
+      <div
+        className="absolute rounded-full"
+        style={{
+          inset: size * 0.075,
+          border: "4px solid rgba(255,255,255,0.42)",
+          boxShadow: "inset 0 0 0 2px rgba(255,200,0,0.72)",
         }}
       />
 
@@ -159,9 +181,40 @@ export function SpinningWheel({
           willChange: "transform",
         }}
       >
+        <defs>
+          <filter id="wheelTextShadow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="1.8" stdDeviation="1.1" floodOpacity="0.35" />
+          </filter>
+          <radialGradient id="wheelGloss" cx="32%" cy="22%" r="78%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35" />
+            <stop offset="45%" stopColor="#ffffff" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="#000000" stopOpacity="0.14" />
+          </radialGradient>
+          {segments.map((s) => (
+            <linearGradient
+              key={`gradient-${s.i}`}
+              id={`segment-${s.i}`}
+              x1="0"
+              y1="0"
+              x2="1"
+              y2="1"
+            >
+              <stop
+                offset="0%"
+                stopColor={s.team === "blue" ? "#58D5FF" : "#FF7777"}
+              />
+              <stop offset="100%" stopColor={s.fill} />
+            </linearGradient>
+          ))}
+        </defs>
         {segments.map((s) => (
           <g key={s.i}>
-            <path d={s.path} fill={s.fill} stroke="rgba(0,0,0,0.08)" strokeWidth={0.5} />
+            <path
+              d={s.path}
+              fill={`url(#segment-${s.i})`}
+              stroke="#FFD94D"
+              strokeWidth={1.4}
+            />
             <text
               x={s.labelPos.x}
               y={s.labelPos.y}
@@ -170,12 +223,23 @@ export function SpinningWheel({
               fontWeight={800}
               textAnchor="middle"
               dominantBaseline="middle"
+              filter="url(#wheelTextShadow)"
               transform={`rotate(${s.center} ${s.labelPos.x} ${s.labelPos.y})`}
             >
               {s.label}
             </text>
           </g>
         ))}
+        <circle cx={cx} cy={cy} r={r} fill="url(#wheelGloss)" pointerEvents="none" />
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r * 0.98}
+          fill="none"
+          stroke="rgba(255,255,255,0.55)"
+          strokeWidth={2}
+          pointerEvents="none"
+        />
       </svg>
 
       {/* Gold center hub */}

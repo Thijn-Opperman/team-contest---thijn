@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 
 interface CharacterPlaceholderProps {
@@ -11,7 +12,11 @@ interface CharacterPlaceholderProps {
   shape?: "rounded" | "circle";
   /** Short hint shown faintly inside the slot during development. */
   hint?: string;
+  /** Public image path, e.g. "/junior.png". */
+  src?: string;
+  alt?: string;
   className?: string;
+  imageClassName?: string;
   style?: CSSProperties;
   children?: ReactNode;
 }
@@ -29,7 +34,10 @@ export function CharacterPlaceholder({
   tint = "rgba(255,255,255,0.18)",
   shape = "rounded",
   hint,
+  src,
+  alt,
   className = "",
+  imageClassName = "",
   style,
   children,
 }: CharacterPlaceholderProps) {
@@ -43,13 +51,23 @@ export function CharacterPlaceholder({
         width,
         height,
         background: tint,
-        boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.25)",
         ...style,
       }}
       role="img"
       aria-label={hint ?? "Character illustration placeholder"}
     >
-      {children ?? (
+      {src ? (
+        <Image
+          src={src}
+          alt={alt ?? hint ?? "Character illustration"}
+          width={width}
+          height={height}
+          className={`h-full w-full object-contain ${imageClassName}`}
+          priority={false}
+        />
+      ) : children ? (
+        children
+      ) : (
         <span className="px-2 text-center text-[11px] font-bold uppercase tracking-wide text-white/55">
           {hint ?? "Character"}
         </span>

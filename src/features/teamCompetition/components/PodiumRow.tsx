@@ -8,20 +8,29 @@ interface PodiumAvatarProps {
   entry: LeaderboardEntry;
   /** Visual emphasis: 1st place is larger and elevated. */
   place: 1 | 2 | 3;
+  accentColor?: string;
 }
 
-const SIZES: Record<1 | 2 | 3, number> = { 1: 64, 2: 56, 3: 56 };
+const SIZES: Record<1 | 2 | 3, number> = { 1: 66, 2: 54, 3: 54 };
 const POP_DELAY: Record<1 | 2 | 3, number> = { 1: 120, 2: 0, 3: 240 };
 
-function Avatar({ url, size }: { url?: string | null; size: number }) {
+function Avatar({
+  url,
+  size,
+  accentColor,
+}: {
+  url?: string | null;
+  size: number;
+  accentColor: string;
+}) {
   return (
     <div
       className="overflow-hidden rounded-full bg-white"
       style={{
         width: size,
         height: size,
-        border: `3px solid ${COLORS.blue}`,
-        boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
+        border: `4px solid ${accentColor}`,
+        boxShadow: "0 6px 12px rgba(0,0,0,0.22), inset 0 0 0 2px #fff",
       }}
     >
       {url ? (
@@ -41,22 +50,28 @@ function Avatar({ url, size }: { url?: string | null; size: number }) {
 }
 
 /** A single podium position (1st / 2nd / 3rd). */
-export function PodiumRow({ entry, place }: PodiumAvatarProps) {
+export function PodiumRow({
+  entry,
+  place,
+  accentColor = COLORS.blue,
+}: PodiumAvatarProps) {
   const size = SIZES[place];
   const delay = POP_DELAY[place];
   const animatedXP = useCountUp(entry.xp, { durationMs: 1100, delayMs: 400 + delay });
 
   return (
     <div className="flex flex-col items-center">
-      <div
-        className="duo-pop relative"
-        style={{ animationDelay: `${delay}ms` }}
-      >
-        <Avatar url={entry.avatarUrl} size={size} />
+      <div className="duo-pop relative" style={{ animationDelay: `${delay}ms` }}>
+        {place === 1 && (
+          <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xl drop-shadow-md">
+            👑
+          </div>
+        )}
+        <Avatar url={entry.avatarUrl} size={size} accentColor={accentColor} />
         <span
           className="absolute -bottom-1 left-1/2 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full text-xs font-black text-white"
           style={{
-            background: COLORS.blue,
+            background: accentColor,
             border: "2px solid #fff",
           }}
         >
@@ -64,13 +79,13 @@ export function PodiumRow({ entry, place }: PodiumAvatarProps) {
         </span>
       </div>
       <div
-        className="duo-rise mt-2 text-sm font-extrabold text-white"
+        className="duo-rise mt-2 text-center text-[13px] font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
         style={{ animationDelay: `${delay + 150}ms` }}
       >
         {entry.name}
       </div>
       <div
-        className="duo-rise text-xs font-bold text-white/80 tabular-nums"
+        className="duo-rise text-[11px] font-black text-white/85 tabular-nums"
         style={{ animationDelay: `${delay + 220}ms` }}
       >
         +{formatXP(animatedXP)} XP

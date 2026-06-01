@@ -24,6 +24,7 @@ export interface TeamState {
   blueXP: number;
   redXP: number;
   leaderboardData: LeaderboardEntry[];
+  redLeaderboardData: LeaderboardEntry[];
   /** Has the persisted state finished loading from storage? */
   hydrated: boolean;
 }
@@ -45,12 +46,21 @@ const DEFAULT_LEADERBOARD: LeaderboardEntry[] = [
   { rank: 5, name: "Mia", xp: 5420, avatarUrl: null },
 ];
 
+const DEFAULT_RED_LEADERBOARD: LeaderboardEntry[] = [
+  { rank: 1, name: "Noah Fox", xp: 7810, avatarUrl: null },
+  { rank: 2, name: "Emma Cardinal", xp: 6620, avatarUrl: null },
+  { rank: 3, name: "Lucas Flame", xp: 6295, avatarUrl: null },
+  { rank: 4, name: "Ava Sparks", xp: 5840, avatarUrl: null },
+  { rank: 5, name: "Milan Red", xp: 5215, avatarUrl: null },
+];
+
 const initialState: TeamState = {
   assignedTeam: null,
   hasBeenAssigned: false,
   blueXP: 73832,
   redXP: 70430,
   leaderboardData: DEFAULT_LEADERBOARD,
+  redLeaderboardData: DEFAULT_RED_LEADERBOARD,
   hydrated: false,
 };
 

@@ -73,7 +73,18 @@ const ITEMS: Item[] = [
   },
   {
     href: "/team/leaderboard",
-    label: "Leaderboard",
+    label: "Blue leaderboard",
+    icon: (
+      <I>
+        <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" />
+        <path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3" />
+        <path d="M12 13v3M9 20h6M10 16h4l1 4H9l1-4Z" />
+      </I>
+    ),
+  },
+  {
+    href: "/team/leaderboard/red",
+    label: "Red leaderboard",
     icon: (
       <I>
         <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" />
@@ -87,6 +98,7 @@ const ITEMS: Item[] = [
 function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
   if (href === "/team") return pathname === "/team";
+  if (href === "/team/leaderboard") return pathname === href;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -157,6 +169,10 @@ export function TopNav() {
           <nav className="flex flex-col p-1.5">
             {ITEMS.map((item) => {
               const active = isActive(pathname, item.href);
+              const activeColor =
+                item.href === "/team/leaderboard/red" ? COLORS.red : COLORS.blue;
+              const activeBg =
+                item.href === "/team/leaderboard/red" ? "#FFE1E1" : COLORS.lightBlueBg;
               return (
                 <Link
                   key={item.href}
@@ -166,13 +182,13 @@ export function TopNav() {
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-extrabold transition-colors"
                   style={{
-                    background: active ? COLORS.lightBlueBg : "transparent",
-                    color: active ? COLORS.blue : COLORS.eel,
+                    background: active ? activeBg : "transparent",
+                    color: active ? activeColor : COLORS.eel,
                   }}
                 >
                   <span
                     className="flex h-7 w-7 items-center justify-center"
-                    style={{ color: active ? COLORS.blue : COLORS.hare }}
+                    style={{ color: active ? activeColor : COLORS.hare }}
                   >
                     {item.icon}
                   </span>

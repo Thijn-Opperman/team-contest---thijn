@@ -17,6 +17,7 @@ export const TEAM_ROUTES = {
   welcome: "/team/welcome",
   standings: "/team/standings",
   leaderboard: "/team/leaderboard",
+  redLeaderboard: "/team/leaderboard/red",
   /** Exit point — back to the main home tab. */
   home: "/",
 } as const;
@@ -34,6 +35,7 @@ export function useTeamNavigation() {
     goWelcome: () => go("welcome"),
     goStandings: () => go("standings"),
     goLeaderboard: () => go("leaderboard"),
+    goRedLeaderboard: () => go("redLeaderboard"),
     exitToHome: () => go("home"),
   };
 }

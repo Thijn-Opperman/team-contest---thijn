@@ -2,18 +2,35 @@
 
 import { useState } from "react";
 import type { TeamId } from "@/src/features/teamCompetition/constants/teamColors";
-import { useTeam } from "@/src/features/teamCompetition/context/TeamContext";
 import TeamWheelScreen from "@/src/features/teamCompetition/screens/TeamWheelScreen";
 
-export default function TeamWheelPage() {
-  const { blueXP, redXP } = useTeam();
+const COUNTS_KEY = "duo.teamCompetition.assignmentCounts.v1";
 
-  // Balancing "algorithm": assign newcomers to the trailing team so the
-  // competition stays close. The wheel is purely cosmetic — the result here is
-  // authoritative and the wheel always lands on this color.
-  const [assignedTeam] = useState<TeamId>(() =>
-    blueXP <= redXP ? "blue" : "red"
-  );
+function randomTeam(): TeamId {
+  const values = new Uint32Array(1);
+  window.crypto?.getRandomValues(values);
+  return values[0] % 2 === 0 ? "blue" : "red";
+}
+
+function chooseBalancedTeam(): TeamId {
+  try {
+    const raw = window.localStorage.getItem(COUNTS_KEY);
+    const parsed = raw ? (JSON.parse(raw) as Partial<Record<TeamId, number>>) : {};
+    const blue = parsed.blue ?? 0;
+    const red = parsed.red ?? 0;
+
+    if (blue < red) return "blue";
+    if (red < blue) return "red";
+    return randomTeam();
+  } catch {
+    return Math.random() < 0.5 ? "blue" : "red";
+  }
+}
+
+export default function TeamWheelPage() {
+  // Local balancing for this prototype: equal counts choose randomly, otherwise
+  // the wheel assigns the side that has been selected less often on this device.
+  const [assignedTeam] = useState<TeamId>(chooseBalancedTeam);
 
   return <TeamWheelScreen assignedTeam={assignedTeam} />;
 }

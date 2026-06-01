@@ -3,13 +3,25 @@ import type { LeaderboardEntry } from "../context/TeamContext";
 
 interface LeaderboardRowProps {
   entry: LeaderboardEntry;
+  accentColor?: string;
 }
 
 /** A ranked row in the leaderboard list (rank | avatar | name | xp). */
-export function LeaderboardRow({ entry }: LeaderboardRowProps) {
+export function LeaderboardRow({ entry, accentColor = "#1CB0F6" }: LeaderboardRowProps) {
+  const isTopThree = entry.rank <= 3;
+
   return (
-    <div className="duo-lift flex items-center gap-3 rounded-2xl border-2 border-b-[3px] border-[#E5E5E5] bg-white px-3 py-2.5 hover:border-[#1CB0F6]/40">
-      <span className="w-5 text-center text-sm font-black text-zinc-500">
+    <div
+      className="duo-lift flex items-center gap-3 rounded-2xl border-2 border-b-[4px] bg-white px-3 py-2"
+      style={{
+        borderColor: isTopThree ? `${accentColor}55` : "#E5E5E5",
+        borderBottomColor: isTopThree ? accentColor : "#D7D7D7",
+      }}
+    >
+      <span
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-black text-white"
+        style={{ background: isTopThree ? accentColor : "#AFAFAF" }}
+      >
         {entry.rank}
       </span>
 
@@ -22,19 +34,27 @@ export function LeaderboardRow({ entry }: LeaderboardRowProps) {
         />
       ) : (
         /* CHARACTER_IMAGE: replace with user avatar */
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-200">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#9ca3af">
+        <div
+          className="flex h-9 w-9 items-center justify-center rounded-full border-2 bg-zinc-200"
+          style={{ borderColor: isTopThree ? accentColor : "#FFFFFF" }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#9ca3af">
             <circle cx="12" cy="8" r="4" />
             <path d="M4 20c0-4 4-6 8-6s8 2 8 6v1H4v-1Z" />
           </svg>
         </div>
       )}
 
-      <span className="flex-1 truncate text-sm font-bold text-zinc-800">
-        {entry.name}
-      </span>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[13px] font-black text-zinc-800">
+          {entry.name}
+        </div>
+        <div className="text-[11px] font-bold text-zinc-400">
+          {isTopThree ? "Top 3" : "Member"}
+        </div>
+      </div>
 
-      <span className="text-sm font-extrabold text-zinc-500">
+      <span className="text-[13px] font-black tabular-nums" style={{ color: accentColor }}>
         +{formatXP(entry.xp)} XP
       </span>
     </div>
