@@ -16,8 +16,8 @@ export default function Home() {
   }
 
   return (
-    <main className="flex h-[100dvh] flex-1 justify-center overflow-hidden bg-[#F7F7F7]">
-      <div className="duo-screen-in flex h-full w-full max-w-[420px] flex-col items-center justify-center px-6 pb-10 pt-10 text-center">
+    <main className="flex h-[100dvh] min-h-[100svh] flex-1 justify-center overflow-hidden bg-[#F7F7F7]">
+      <div className="duo-screen-in box-border flex h-full w-full max-w-[420px] flex-col items-center justify-center px-6 pt-[calc(env(safe-area-inset-top)+2.5rem)] pb-[calc(env(safe-area-inset-bottom)+2.5rem)] text-center">
         <div
           className="duo-rise relative flex h-64 w-64 items-center justify-center rounded-full"
           style={{

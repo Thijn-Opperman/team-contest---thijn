@@ -9,9 +9,9 @@ interface ScreenShellProps {
 }
 
 /**
- * Full-bleed colored surface for a single screen. It fills exactly one mobile
- * viewport inside the navigator, so screens behave like app pages instead of
- * long web pages.
+ * Full-bleed colored surface for a single screen. The background fills the
+ * complete phone viewport (including iPhone safe areas). Content gets safe-area
+ * padding and may scroll as a fallback instead of being clipped.
  */
 export function ScreenShell({
   background,
@@ -21,7 +21,7 @@ export function ScreenShell({
 }: ScreenShellProps) {
   return (
     <div
-      className={`relative flex h-full min-h-0 w-full flex-col overflow-hidden ${className}`}
+      className={`relative box-border flex h-full min-h-0 w-full flex-col overflow-x-hidden overflow-y-auto overscroll-contain pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] ${className}`}
       style={{ background, ...style }}
     >
       {children}

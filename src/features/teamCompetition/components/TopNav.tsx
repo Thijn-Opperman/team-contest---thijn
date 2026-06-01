@@ -128,7 +128,10 @@ export function TopNav() {
         />
       )}
 
-      <div className="absolute right-4 top-4 z-50 flex flex-col items-end">
+      <div
+        className="absolute right-4 z-50 flex flex-col items-end"
+        style={{ top: "calc(env(safe-area-inset-top) + 1rem)" }}
+      >
         <button
           type="button"
           aria-label={open ? "Close navigation" : "Open navigation"}
