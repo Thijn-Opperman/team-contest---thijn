@@ -17,12 +17,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Duolingo Team Competition",
   description: "Join your team and compete for XP!",
+  applicationName: "Team Contest",
+  appleWebApp: {
+    capable: true,
+    title: "Team Contest",
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#58CC02",
 };
 
 export default function RootLayout({
