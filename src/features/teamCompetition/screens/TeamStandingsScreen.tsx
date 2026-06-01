@@ -22,9 +22,9 @@ const BACKGROUND = `
 
 function TitleRibbon() {
   return (
-    <div className="relative mx-[-20px] h-[70px] shrink-0">
+    <div className="relative mx-[-20px] h-[56px] shrink-0">
       <div
-        className="absolute inset-x-0 top-0 flex h-[62px] items-center justify-center gap-3 shadow-lg"
+        className="absolute inset-x-0 top-0 flex h-[50px] items-center justify-center gap-3 shadow-lg"
         style={{
           background: COLORS.green,
           borderBottom: `5px solid ${COLORS.greenBorder}`,
@@ -32,21 +32,21 @@ function TitleRibbon() {
           borderBottomRightRadius: "50% 18px",
         }}
       >
-        <Sparkle size={22} color="#1ED760" className="absolute left-8 top-4" />
+        <Sparkle size={18} color="#1ED760" className="absolute left-8 top-3" />
         <Sparkle
-          size={18}
+          size={15}
           color="#B9F57A"
           delayMs={450}
-          className="absolute left-16 top-6"
+          className="absolute left-16 top-5"
         />
-        <h1 className="text-[22px] font-black text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.32)]">
+        <h1 className="text-[21px] font-black text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.32)]">
           Team standings
         </h1>
         <Sparkle
-          size={24}
+          size={20}
           color="#B9F57A"
           delayMs={700}
-          className="absolute right-8 top-5"
+          className="absolute right-8 top-4"
         />
       </div>
     </div>
@@ -63,19 +63,19 @@ function InfoChip({
   value: string;
 }) {
   return (
-    <div className="duo-rise flex flex-1 items-center gap-2 rounded-2xl border-2 border-[#E5E5E5] bg-white px-3 py-2 shadow-sm">
+    <div className="duo-rise flex flex-1 items-center gap-2 rounded-2xl border-2 border-[#E5E5E5] bg-white px-3 py-1.5 shadow-sm">
       <span
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-2 bg-[#F7F7F7] shadow-sm"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 bg-[#F7F7F7] shadow-sm"
         style={{ borderColor: "#E5E5E5" }}
         aria-hidden
       >
         {icon}
       </span>
       <div>
-        <div className="text-[11px] font-black uppercase tracking-wide text-[#AFAFAF]">
+        <div className="text-[10px] font-black uppercase tracking-wide text-[#AFAFAF]">
           {label}
         </div>
-        <div className="text-sm font-black text-[#4B4B4B]">
+        <div className="text-xs font-black text-[#4B4B4B]">
           {value}
         </div>
       </div>
@@ -85,7 +85,7 @@ function InfoChip({
 
 function TrophyIcon() {
   return (
-    <svg width="27" height="27" viewBox="0 0 24 24" fill="none">
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
       <path
         d="M7 4h10v4.5a5 5 0 0 1-10 0V4Z"
         fill="#FFC800"
@@ -112,7 +112,7 @@ function TrophyIcon() {
 
 function CalendarIcon() {
   return (
-    <svg width="27" height="27" viewBox="0 0 24 24" fill="none">
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
       <rect
         x="4"
         y="5.5"
@@ -134,7 +134,7 @@ function CalendarIcon() {
 
 function HeartIcon({ color }: { color: string }) {
   return (
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
         d="M12 20.4S5 16.1 5 10.2C5 7.6 6.7 6 8.8 6c1.4 0 2.5.8 3.2 1.8C12.7 6.8 13.8 6 15.2 6 17.3 6 19 7.6 19 10.2c0 5.9-7 10.2-7 10.2Z"
         fill={color}
@@ -182,11 +182,11 @@ export function TeamStandingsScreen({
 
   return (
     <ScreenShell background={BACKGROUND}>
-      <div className="flex h-full min-h-0 flex-col px-5">
+      <div className="flex min-h-0 flex-1 flex-col px-5">
         <TitleRibbon />
 
         <div
-          className="duo-rise mx-auto -mt-1 rounded-full bg-white/85 px-4 py-1 text-center text-xs font-black text-[#4B4B4B] shadow-sm"
+          className="duo-rise mx-auto -mt-1 rounded-full bg-white/85 px-4 py-0.5 text-center text-[11px] font-black text-[#4B4B4B] shadow-sm"
           style={{ animationDelay: "80ms" }}
         >
           Current team scores
@@ -194,7 +194,7 @@ export function TeamStandingsScreen({
 
         {/* Team cards */}
         <div
-          className="duo-rise mt-3 flex items-stretch gap-3"
+          className="duo-rise mt-2 flex items-stretch gap-3"
           style={{ animationDelay: "120ms" }}
         >
           <TeamCard
@@ -217,28 +217,28 @@ export function TeamStandingsScreen({
           />
         </div>
 
-        <div className="mt-3 flex gap-3">
+        <div className="mt-2 flex gap-3">
           <InfoChip icon={<TrophyIcon />} label="Reward" value="Team chest" />
           <InfoChip icon={<CalendarIcon />} label="Reset in" value="10 days" />
         </div>
 
         {/* Leading team banner */}
         <div
-          className="duo-rise relative mt-3 overflow-hidden rounded-2xl border-2 border-white/55 px-4 py-3 text-center shadow-lg"
+          className="duo-rise relative mt-2 overflow-hidden rounded-2xl border-2 border-white/55 px-3 py-2 text-center shadow-lg"
           style={{ background: "rgba(255,255,255,0.78)", animationDelay: "260ms" }}
         >
           <span className="duo-shimmer pointer-events-none absolute inset-0" />
-          <div className="relative mx-auto mb-1 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-md">
+          <div className="relative mx-auto mb-0.5 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md">
             <HeartIcon color={leaderColor} />
           </div>
           <div
-            className="relative text-[15px] font-black tabular-nums"
+            className="relative text-[13px] font-black tabular-nums"
             style={{ color: leaderColor }}
           >
             {leaderName} team is leading by {formatXP(animatedDiff)} XP
           </div>
           <div
-            className="relative mt-1 text-xs font-black"
+            className="relative mt-0.5 text-[11px] font-black"
             style={{ color: leaderColor }}
           >
             {trailingTeam} needs {formatXP(diff)} XP to catch up.
@@ -246,23 +246,26 @@ export function TeamStandingsScreen({
         </div>
 
         <div
-          className="duo-rise mt-3 rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-2 text-center text-xs font-black text-[#4B4B4B] shadow-sm"
+          className="duo-rise mt-2 rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-1.5 text-center text-[11px] font-black text-[#4B4B4B] shadow-sm"
           style={{ animationDelay: "330ms" }}
         >
           Today&apos;s bonus: finish 2 lessons for extra team XP.
         </div>
 
         <div
-          className="duo-rise mt-auto flex flex-col gap-2 pt-3 pb-4"
+          className="duo-rise mt-auto flex flex-col gap-2 pt-2 pb-3"
           style={{ animationDelay: "360ms" }}
         >
           <DuoButton
             variant="white"
             onClick={ctx.assignedTeam ? goWelcome : goWheel}
+            className="py-3 text-base"
           >
             {assignedLabel}
           </DuoButton>
-          <DuoButton onClick={exitToHome}>Continue Learning</DuoButton>
+          <DuoButton onClick={exitToHome} className="py-3 text-base">
+            Continue Learning
+          </DuoButton>
         </div>
       </div>
     </ScreenShell>

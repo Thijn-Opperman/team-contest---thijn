@@ -43,7 +43,7 @@ export function TeamCard({
 
   return (
     <div
-      className="duo-lift relative flex flex-1 flex-col items-center overflow-hidden rounded-3xl px-3 pb-4 pt-4"
+      className="duo-lift relative flex flex-1 flex-col items-center overflow-hidden rounded-[1.35rem] px-2.5 pb-3 pt-3"
       style={{
         background: cardBg,
         border: "2px solid rgba(255,255,255,0.55)",
@@ -54,7 +54,7 @@ export function TeamCard({
     >
       {isLeading && (
         <div
-          className="absolute right-2 top-2 z-20 rounded-full px-2 py-1 text-[10px] font-black uppercase tracking-wide text-white"
+          className="absolute right-2 top-2 z-20 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-white"
           style={{ background: COLORS.green, boxShadow: "0 3px 0 rgba(0,0,0,0.14)" }}
         >
           Leading
@@ -70,8 +70,8 @@ export function TeamCard({
 
       {/* CHARACTER_IMAGE: blue=Eddy / red=Junior standings mascot */}
       <CharacterPlaceholder
-        width={118}
-        height={112}
+        width={94}
+        height={88}
         tint="rgba(255,255,255,0.20)"
         hint={isBlue ? "Eddy" : "Junior"}
         src={isBlue ? "/junior.png" : "/eddy.png"}
@@ -80,18 +80,18 @@ export function TeamCard({
         className="duo-bob"
       />
 
-      <div className="mt-1 text-center text-sm font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
+      <div className="mt-1 text-center text-xs font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
         {name}
       </div>
 
-      <div className="mt-1 flex items-baseline gap-1">
-        <span className="text-2xl font-black text-white tabular-nums">
+      <div className="mt-0.5 flex items-baseline gap-1">
+        <span className="text-xl font-black text-white tabular-nums">
           {formatXP(animatedXP)}
         </span>
         <span className="text-sm font-extrabold text-white/80">XP</span>
       </div>
 
-      <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-black/20 shadow-inner">
+      <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-black/20 shadow-inner">
         <div
           className="h-full rounded-full"
           style={{
@@ -103,7 +103,7 @@ export function TeamCard({
       </div>
 
       {gapLabel && (
-        <div className="mt-2 text-center text-[11px] font-black text-white/85">
+        <div className="mt-1.5 text-center text-[10px] font-black text-white/85">
           {gapLabel}
         </div>
       )}
@@ -111,7 +111,7 @@ export function TeamCard({
       <button
         type="button"
         onClick={onViewLeaderboard}
-        className="duo-tap mt-3 text-xs font-bold text-white underline underline-offset-2 hover:text-white/80"
+        className="duo-tap mt-2 text-[11px] font-bold text-white underline underline-offset-2 hover:text-white/80"
       >
         View leaderboard
       </button>

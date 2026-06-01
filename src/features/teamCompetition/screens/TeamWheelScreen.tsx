@@ -60,7 +60,7 @@ function BattleCard({
   return (
     <div className="flex flex-1 flex-col items-center">
       <div
-        className={`relative flex h-[142px] w-full items-center justify-center overflow-hidden rounded-3xl border-2 transition-all duration-500 ${
+        className={`relative flex h-[104px] w-full items-center justify-center overflow-hidden rounded-[1.35rem] border-2 transition-all duration-500 ${
           active ? "duo-pop scale-105" : dimmed ? "opacity-55" : ""
         }`}
         style={{
@@ -84,8 +84,8 @@ function BattleCard({
           />
         )}
         <CharacterPlaceholder
-          width={116}
-          height={128}
+          width={92}
+          height={100}
           tint="transparent"
           hint={name}
           src={src}
@@ -95,12 +95,12 @@ function BattleCard({
         />
       </div>
       <span
-        className="mt-2 text-lg font-black drop-shadow-[0_2px_1px_rgba(0,0,0,0.22)]"
+        className="mt-1 text-base font-black drop-shadow-[0_2px_1px_rgba(0,0,0,0.22)]"
         style={{ color }}
       >
         {name}
       </span>
-      <span className="text-xs font-black uppercase tracking-wide text-white/80">
+      <span className="text-[10px] font-black uppercase tracking-wide text-white/80">
         {subtitle}
       </span>
     </div>
@@ -127,44 +127,42 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
 
   return (
     <ScreenShell background={BACKGROUND}>
-      <div className="flex min-h-full flex-1 flex-col items-center px-5 pt-8">
-        <h1 className="duo-rise text-center text-[30px] font-black leading-tight text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.28)]">
-          Duolingo
-          <br />
-          Competition
+      <div className="flex min-h-0 flex-1 flex-col items-center px-5 pt-4">
+        <h1 className="duo-rise text-center text-[25px] font-black leading-none text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.28)]">
+          Team Competition
         </h1>
         <p
-          className="duo-rise mt-2 text-center text-base font-black text-white/90 drop-shadow-[0_2px_1px_rgba(0,0,0,0.2)]"
+          className="duo-rise mt-1 text-center text-sm font-black text-white/90 drop-shadow-[0_2px_1px_rgba(0,0,0,0.2)]"
           style={{ animationDelay: "80ms" }}
         >
           Check in what team you&apos;re in!
         </p>
 
-        <div className="relative mt-5 flex items-center justify-center">
+        <div className="relative mt-3 flex items-center justify-center">
           <span
             className="absolute top-[42%] h-16 w-64 rounded-full bg-black/25 blur-xl"
             aria-hidden
           />
           <SpinningWheel
             assignedTeam={assignedTeam}
-            size={286}
+            size={236}
             onSpinComplete={() => setSpinDone(true)}
           />
         </div>
 
         <div
-          className="duo-rise mt-5 w-full rounded-3xl border-2 border-white/20 bg-black/14 p-3 backdrop-blur-sm"
+          className="duo-rise mt-3 w-full rounded-[1.35rem] border-2 border-white/20 bg-black/14 p-2.5 backdrop-blur-sm"
           style={{ animationDelay: "140ms" }}
         >
-          <div className="mb-3 flex items-center justify-center gap-2">
+          <div className="mb-2 flex items-center justify-center gap-2">
             <span className="h-px flex-1 bg-white/25" />
-            <span className="rounded-full bg-white/16 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-white">
+            <span className="rounded-full bg-white/16 px-3 py-0.5 text-[10px] font-black uppercase tracking-[0.16em] text-white">
               Pick a side
             </span>
             <span className="h-px flex-1 bg-white/25" />
           </div>
 
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2.5">
             <BattleCard
               team="red"
               name="Junior"
@@ -176,7 +174,7 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
 
             <div className="flex flex-col items-center">
               <div
-                className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white/40 text-xl font-black text-white shadow-lg"
+                className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/40 text-base font-black text-white shadow-lg"
                 style={{
                   background: `linear-gradient(180deg, ${COLORS.gold}, ${COLORS.goldDark})`,
                   borderBottomWidth: 5,
@@ -185,7 +183,7 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
               >
                 VS
               </div>
-              <svg className="mt-2" width="22" height="30" viewBox="0 0 24 32" aria-hidden>
+              <svg className="mt-1" width="18" height="24" viewBox="0 0 24 32" aria-hidden>
                 <path
                   d="M13 0 2 18h7l-2 14 13-20h-8z"
                   fill={COLORS.gold}
@@ -205,7 +203,7 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
             />
           </div>
 
-          <div className="mt-3 min-h-7 text-center text-sm font-black text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
+          <div className="mt-2 min-h-5 text-center text-xs font-black text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
             {spinDone
               ? assignedTeam === "blue"
                 ? "You're joining Team Blue."
@@ -215,9 +213,9 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
         </div>
 
         {/* CTA in flow: disabled grey until the wheel resolves, then activates */}
-        <div className="mt-auto w-full pt-5 pb-5">
+        <div className="mt-auto w-full pt-3 pb-3">
           <div className={spinDone ? "duo-pop-in" : ""}>
-            <DuoButton onClick={goWelcome} disabled={!spinDone}>
+            <DuoButton onClick={goWelcome} disabled={!spinDone} className="py-3 text-base">
               Continue
             </DuoButton>
           </div>
