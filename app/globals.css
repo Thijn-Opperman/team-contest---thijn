@@ -216,6 +216,56 @@ body {
   animation: duo-shimmer 2.8s ease-in-out infinite;
 }
 
+.duo-winner-reveal {
+  transition: all 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.duo-team-badge {
+  animation: duo-team-badge 0.35s ease-out both;
+}
+
+@keyframes duo-team-badge {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.duo-winner-banner {
+  animation: duo-winner-banner 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+}
+
+@keyframes duo-winner-banner {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.duo-continue-hint {
+  animation: duo-continue-hint 1.8s ease-in-out 0.75s infinite;
+}
+
+@keyframes duo-continue-hint {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .duo-pop-in,
   .duo-sparkle,
@@ -225,7 +275,12 @@ body {
   .duo-rise,
   .duo-pop,
   .duo-ring-pulse,
-  .duo-shimmer {
+  .duo-shimmer,
+  .duo-team-badge,
+  .duo-winner-banner,
+  .duo-continue-hint,
+  .duo-winner-reveal {
     animation: none;
+    transition: none !important;
   }
 }

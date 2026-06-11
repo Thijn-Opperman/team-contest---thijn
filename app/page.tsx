@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { COLORS } from "@/src/features/teamCompetition/constants/teamColors";
+import { CharacterPlaceholder } from "@/src/features/teamCompetition/components/CharacterPlaceholder";
 import { DuoButton } from "@/src/features/teamCompetition/components/DuoButton";
 
 /**
@@ -57,8 +58,57 @@ export default function Home() {
         </p>
 
         <div
-          className="duo-rise mt-10 w-full"
-          style={{ animationDelay: "260ms" }}
+          className="duo-rise relative mt-8 flex w-full max-w-[340px] items-end justify-center"
+          style={{ animationDelay: "240ms" }}
+        >
+          <div className="flex flex-1 flex-col items-center">
+            <CharacterPlaceholder
+              width={118}
+              height={128}
+              src="/junior.png"
+              alt="Team Blue mascot"
+              tint="transparent"
+              imageClassName="drop-shadow-[0_6px_2px_rgba(0,0,0,0.12)]"
+              className="duo-bob"
+            />
+            <span
+              className="mt-1 text-xs font-black uppercase tracking-wide"
+              style={{ color: COLORS.blue }}
+            >
+              Team Blue
+            </span>
+          </div>
+
+          <div
+            className="mb-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[3px] border-white text-[11px] font-black text-white shadow-[0_3px_0_#E6A800]"
+            style={{ background: COLORS.gold }}
+            aria-hidden
+          >
+            VS
+          </div>
+
+          <div className="flex flex-1 flex-col items-center">
+            <CharacterPlaceholder
+              width={118}
+              height={128}
+              src="/eddy.png"
+              alt="Team Red mascot"
+              tint="transparent"
+              imageClassName="drop-shadow-[0_6px_2px_rgba(0,0,0,0.12)]"
+              className="duo-bob"
+            />
+            <span
+              className="mt-1 text-xs font-black uppercase tracking-wide"
+              style={{ color: COLORS.red }}
+            >
+              Team Red
+            </span>
+          </div>
+        </div>
+
+        <div
+          className="duo-rise mt-6 w-full"
+          style={{ animationDelay: "300ms" }}
         >
           <DuoButton onClick={() => go("/team")}>
             Spin the wheel

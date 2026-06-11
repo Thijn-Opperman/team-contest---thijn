@@ -1,10 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { COLORS, formatXP, type TeamId } from "../constants/teamColors";
 import { useCountUp } from "../hooks/useCountUp";
 import { CharacterPlaceholder } from "./CharacterPlaceholder";
-import { Sparkle } from "./Sparkle";
 
 interface TeamCardProps {
   team: TeamId;
@@ -12,9 +12,9 @@ interface TeamCardProps {
   xp: number;
   /** 0..1 fill of the progress bar. */
   progress: number;
+  href: string;
   isLeading?: boolean;
   gapLabel?: string;
-  onViewLeaderboard?: () => void;
 }
 
 /** Team standings card (one per team) used on the standings screen. */
@@ -23,14 +23,15 @@ export function TeamCard({
   name,
   xp,
   progress,
+  href,
   isLeading = false,
   gapLabel,
-  onViewLeaderboard,
 }: TeamCardProps) {
   const isBlue = team === "blue";
   const accent = isBlue ? COLORS.blue : COLORS.red;
   const accentDark = isBlue ? COLORS.blueDark : COLORS.redDark;
-  const cardBg = `linear-gradient(180deg, rgba(255,255,255,0.35) 0%, ${accent} 45%, ${accentDark} 100%)`;
+  const accentBorder = isBlue ? COLORS.blueBorder : COLORS.redBorder;
+  const cardBg = `linear-gradient(180deg, ${accent} 0%, ${accentDark} 100%)`;
 
   const animatedXP = useCountUp(xp, { durationMs: 1200, delayMs: 250 });
 
@@ -42,80 +43,68 @@ export function TeamCard({
   }, []);
 
   return (
-    <div
-      className="duo-lift relative flex flex-1 flex-col items-center overflow-hidden rounded-[1.35rem] px-2.5 pb-3 pt-3"
+    <Link
+      href={href}
+      aria-label={`View ${name} leaderboard`}
+      className="duo-lift duo-tap relative z-[1] flex h-full min-h-[208px] min-w-0 w-full flex-col items-center overflow-hidden rounded-2xl px-2 pb-3 pt-2.5 text-center"
       style={{
         background: cardBg,
-        border: "2px solid rgba(255,255,255,0.55)",
+        border: "2px solid rgba(255,255,255,0.45)",
         borderBottomWidth: 5,
-        borderBottomColor: "rgba(0,0,0,0.12)",
-        boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
+        borderBottomColor: accentBorder,
+        boxShadow: "0 6px 0 rgba(0,0,0,0.12)",
       }}
     >
       {isLeading && (
         <div
           className="absolute right-2 top-2 z-20 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-white"
-          style={{ background: COLORS.green, boxShadow: "0 3px 0 rgba(0,0,0,0.14)" }}
+          style={{ background: COLORS.green, boxShadow: "0 3px 0 #46A302" }}
         >
-          Leading
+          #1
         </div>
       )}
 
-      <Sparkle
-        size={16}
-        delayMs={isBlue ? 0 : 600}
-        className="absolute left-3 top-3"
-        color="rgba(255,255,255,0.9)"
-      />
-
-      {/* CHARACTER_IMAGE: blue=Eddy / red=Junior standings mascot */}
+      {/* CHARACTER_IMAGE: blue=Junior / red=Eddy standings mascot */}
       <CharacterPlaceholder
-        width={94}
-        height={88}
-        tint="rgba(255,255,255,0.20)"
-        hint={isBlue ? "Eddy" : "Junior"}
+        width={88}
+        height={82}
+        tint="rgba(255,255,255,0.12)"
+        hint={isBlue ? "Junior" : "Eddy"}
         src={isBlue ? "/junior.png" : "/eddy.png"}
-        alt={isBlue ? "Eddy mascot" : "Junior mascot"}
-        imageClassName="drop-shadow-[0_6px_2px_rgba(0,0,0,0.16)]"
-        className="duo-bob"
+        alt={isBlue ? "Junior mascot" : "Eddy mascot"}
+        imageClassName="drop-shadow-[0_6px_2px_rgba(0,0,0,0.16)] pointer-events-none"
+        className="duo-bob pointer-events-none"
       />
 
-      <div className="mt-1 text-center text-xs font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
+      <div className="mt-1 flex min-h-[2rem] items-center justify-center text-center text-[11px] font-black leading-tight text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
         {name}
       </div>
 
-      <div className="mt-0.5 flex items-baseline gap-1">
-        <span className="text-xl font-black text-white tabular-nums">
+      <div className="mt-1 flex items-baseline gap-0.5">
+        <span className="text-[22px] font-black text-white tabular-nums leading-none">
           {formatXP(animatedXP)}
         </span>
-        <span className="text-sm font-extrabold text-white/80">XP</span>
+        <span className="text-xs font-extrabold text-white/75">XP</span>
       </div>
 
-      <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-black/20 shadow-inner">
+      <div className="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-black/25">
         <div
-          className="h-full rounded-full"
+          className="h-full rounded-full bg-white/90"
           style={{
             width: `${(barReady ? Math.max(0, Math.min(1, progress)) : 0) * 100}%`,
-            background: `linear-gradient(90deg, #6BE7FF 0%, ${accentDark} 100%)`,
             transition: "width 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s",
           }}
         />
       </div>
 
-      {gapLabel && (
-        <div className="mt-1.5 text-center text-[10px] font-black text-white/85">
-          {gapLabel}
-        </div>
-      )}
+      <div className="mt-2 flex min-h-[14px] items-center justify-center text-center text-[10px] font-black text-white/90">
+        {gapLabel ?? "\u00A0"}
+      </div>
 
-      <button
-        type="button"
-        onClick={onViewLeaderboard}
-        className="duo-tap mt-2 text-[11px] font-bold text-white underline underline-offset-2 hover:text-white/80"
-      >
-        View leaderboard
-      </button>
-    </div>
+      <span className="mt-auto text-[10px] font-black uppercase tracking-wide text-white/90 underline decoration-1 underline-offset-2">
+        Leaderboard
+      </span>
+    </Link>
   );
 }
 

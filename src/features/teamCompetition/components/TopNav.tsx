@@ -129,7 +129,7 @@ export function TopNav() {
       )}
 
       <div
-        className="absolute right-4 z-50 flex flex-col items-end"
+        className="pointer-events-none absolute right-4 z-50 flex flex-col items-end"
         style={{ top: "calc(env(safe-area-inset-top) + 1rem)" }}
       >
         <button
@@ -137,7 +137,7 @@ export function TopNav() {
           aria-label={open ? "Close navigation" : "Open navigation"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="duo-tap flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-b-[4px] border-[#E5E5E5] bg-white text-[#4B4B4B] shadow-lg"
+          className="duo-tap pointer-events-auto flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-b-[4px] border-[#E5E5E5] bg-white text-[#4B4B4B] shadow-lg"
         >
           <span className="relative block h-[18px] w-[20px]">
             <span
@@ -155,12 +155,13 @@ export function TopNav() {
           </span>
         </button>
 
-        {/* Menu panel */}
+        {/* Menu panel — absolute so the closed panel does not widen the hit area */}
         <div
-          className="mt-2 w-60 origin-top-right overflow-hidden rounded-2xl border-2 border-[#E5E5E5] bg-white shadow-2xl transition-all duration-200 ease-out"
+          className="pointer-events-auto absolute right-0 top-[calc(100%+0.5rem)] w-60 origin-top-right overflow-hidden rounded-2xl border-2 border-[#E5E5E5] bg-white shadow-2xl transition-all duration-200 ease-out"
           style={{
             transform: open ? "scale(1) translateY(0)" : "scale(0.92) translateY(-8px)",
             opacity: open ? 1 : 0,
+            visibility: open ? "visible" : "hidden",
             pointerEvents: open ? "auto" : "none",
           }}
           role="menu"

@@ -1,12 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { COLORS, type TeamId } from "../constants/teamColors";
+import { COLORS, TEAMS, type TeamId } from "../constants/teamColors";
 import { useTeam } from "../context/TeamContext";
 import { useTeamNavigation } from "../navigation/TeamCompetitionNavigator";
 import { CharacterPlaceholder } from "../components/CharacterPlaceholder";
 import { DuoButton } from "../components/DuoButton";
+import { PageTitleRibbon } from "../components/PageTitleRibbon";
 import { ScreenShell } from "../components/ScreenShell";
+import { Sparkle } from "../components/Sparkle";
 import { SpinningWheel } from "../components/SpinningWheel";
 
 interface TeamWheelScreenProps {
@@ -14,11 +17,11 @@ interface TeamWheelScreenProps {
   assignedTeam: TeamId;
 }
 
-const BACKGROUND = `
-  radial-gradient(80% 45% at 50% 0%, rgba(88,204,2,0.9) 0%, transparent 72%),
-  radial-gradient(70% 45% at 50% 56%, rgba(0,0,0,0.34) 0%, transparent 70%),
-  linear-gradient(105deg, ${COLORS.blue} 0%, ${COLORS.blue} 39%, rgba(75,75,75,0.42) 50%, ${COLORS.red} 61%, ${COLORS.red} 100%)
-`;
+const WHEEL_SIZE = 318;
+const CHARACTER_WIDTH = 168;
+const CHARACTER_HEIGHT = 182;
+const WINNER_SCALE = 1.48;
+
 const COUNTS_KEY = "duo.teamCompetition.assignmentCounts.v1";
 
 function recordAssignment(team: TeamId) {
@@ -38,71 +41,195 @@ function recordAssignment(team: TeamId) {
   }
 }
 
-function BattleCard({
-  team,
-  name,
-  subtitle,
-  src,
-  active,
-  dimmed,
+/** Matches the foreground hill green at the bottom edge of wheel-hills-bg.png. */
+const WHEEL_GROUND = "#96C551";
+
+/** Layered background: hills scene over solid ground color. */
+function WheelScreenBackground() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+      <div
+        className="absolute inset-0"
+        style={{ background: WHEEL_GROUND }}
+      />
+      <div
+        className="absolute inset-x-0 top-0 h-[64%]"
+        style={{
+          background: `url('/wheel-hills-bg.png') center top / cover no-repeat, ${WHEEL_GROUND}`,
+        }}
+      />
+    </div>
+  );
+}
+
+/** Sparkles scattered in the white sky area below the title banner. */
+function SkyDecorations() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[42%]"
+      aria-hidden
+    >
+      <Sparkle size={20} color="#C8EB9A" className="absolute left-[10%] top-[22%]" />
+      <Sparkle
+        size={14}
+        color="#A5E8C0"
+        delayMs={320}
+        className="absolute left-[24%] top-[10%]"
+      />
+      <Sparkle
+        size={18}
+        color="#DDF4C8"
+        delayMs={640}
+        className="absolute left-[38%] top-[28%]"
+      />
+      <Sparkle
+        size={12}
+        color="#B9F57A"
+        delayMs={180}
+        className="absolute left-[52%] top-[8%]"
+      />
+      <Sparkle
+        size={22}
+        color="#C8EB9A"
+        delayMs={880}
+        className="absolute right-[18%] top-[18%]"
+      />
+      <Sparkle
+        size={15}
+        color="#A5E8C0"
+        delayMs={520}
+        className="absolute right-[32%] top-[32%]"
+      />
+      <Sparkle
+        size={17}
+        color="#E5F8D6"
+        delayMs={760}
+        className="absolute right-[8%] top-[6%]"
+      />
+      <Sparkle
+        size={11}
+        color="#89E219"
+        delayMs={1040}
+        className="absolute left-[68%] top-[14%]"
+      />
+    </div>
+  );
+}
+
+function WheelCharacters({
+  assignedTeam,
+  spinDone,
 }: {
-  team: TeamId;
-  name: string;
-  subtitle: string;
-  src: string;
-  active: boolean;
-  dimmed: boolean;
+  assignedTeam: TeamId;
+  spinDone: boolean;
 }) {
-  const isBlue = team === "blue";
-  const color = isBlue ? COLORS.blue : COLORS.red;
-  const dark = isBlue ? COLORS.blueDark : COLORS.redDark;
+  const juniorIsWinner = spinDone && assignedTeam === "blue";
+  const eddyIsWinner = spinDone && assignedTeam === "red";
+  const juniorIsLoser = spinDone && !juniorIsWinner;
+  const eddyIsLoser = spinDone && !eddyIsWinner;
 
   return (
-    <div className="flex flex-1 flex-col items-center">
+    <div className="pointer-events-none absolute inset-0 z-30 overflow-visible">
       <div
-        className={`relative flex h-[104px] w-full items-center justify-center overflow-hidden rounded-[1.35rem] border-2 transition-all duration-500 ${
-          active ? "duo-pop scale-105" : dimmed ? "opacity-55" : ""
-        }`}
+        className="duo-winner-reveal absolute"
         style={{
-          background: `linear-gradient(180deg, rgba(255,255,255,0.34), ${color}55 44%, ${dark}70 100%)`,
-          borderColor: active ? COLORS.gold : "rgba(255,255,255,0.22)",
-          borderBottomWidth: 5,
-          borderBottomColor: active ? COLORS.goldDark : "rgba(0,0,0,0.15)",
-          boxShadow: active
-            ? `0 0 0 4px ${color}55, 0 14px 28px rgba(0,0,0,0.24)`
-            : "0 10px 18px rgba(0,0,0,0.18)",
+          left: juniorIsWinner ? "50%" : "2%",
+          bottom: juniorIsWinner ? "20%" : "4%",
+          transform: juniorIsWinner
+            ? `translateX(-50%) scale(${WINNER_SCALE})`
+            : juniorIsLoser
+              ? "scale(0.75)"
+              : "scale(1)",
+          opacity: juniorIsLoser ? 0 : 1,
         }}
+        aria-hidden={juniorIsLoser}
       >
-        <span
-          className="absolute -left-10 -top-12 h-28 w-28 rounded-full bg-white/16"
-          aria-hidden
-        />
-        {active && (
-          <span
-            className="duo-ring-pulse pointer-events-none absolute inset-5 rounded-3xl"
-            style={{ boxShadow: `0 0 0 4px ${COLORS.gold}` }}
-          />
-        )}
         <CharacterPlaceholder
-          width={92}
-          height={100}
+          width={CHARACTER_WIDTH}
+          height={CHARACTER_HEIGHT}
           tint="transparent"
-          hint={name}
-          src={src}
-          alt={`${name} mascot`}
-          imageClassName="drop-shadow-[0_7px_2px_rgba(0,0,0,0.2)]"
-          className="relative z-10"
+          src="/junior.png"
+          alt="Junior"
         />
       </div>
-      <span
-        className="mt-1 text-base font-black drop-shadow-[0_2px_1px_rgba(0,0,0,0.22)]"
-        style={{ color }}
+
+      <div
+        className="duo-winner-reveal absolute"
+        style={{
+          left: eddyIsWinner ? "50%" : "auto",
+          right: eddyIsWinner ? "auto" : "2%",
+          bottom: eddyIsWinner ? "20%" : "4%",
+          transform: eddyIsWinner
+            ? `translateX(-50%) scale(${WINNER_SCALE})`
+            : eddyIsLoser
+              ? "scale(0.75)"
+              : "scale(1)",
+          opacity: eddyIsLoser ? 0 : 1,
+        }}
+        aria-hidden={eddyIsLoser}
       >
-        {name}
-      </span>
-      <span className="text-[10px] font-black uppercase tracking-wide text-white/80">
-        {subtitle}
-      </span>
+        <CharacterPlaceholder
+          width={CHARACTER_WIDTH}
+          height={CHARACTER_HEIGHT}
+          tint="transparent"
+          src="/eddy.png"
+          alt="Eddy"
+        />
+      </div>
+    </div>
+  );
+}
+
+/** Result banner shown above the wheel after the spin completes. */
+function WheelResultBanner({ team }: { team: TeamId }) {
+  const info = TEAMS[team];
+  const accentBorder = team === "blue" ? COLORS.blueBorder : COLORS.redBorder;
+
+  return (
+    <div
+      className="duo-winner-banner mb-4 w-full max-w-[320px] shrink-0 px-1"
+      role="status"
+      aria-live="polite"
+    >
+      <div
+        className="rounded-2xl border-2 border-b-4 bg-white px-4 py-3 text-center shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
+        style={{ borderColor: accentBorder }}
+      >
+        <p
+          className="text-[11px] font-black uppercase tracking-[0.16em]"
+          style={{ color: info.color }}
+        >
+          You joined
+        </p>
+        <p
+          className="mt-0.5 text-[21px] font-black leading-tight text-[#4B4B4B]"
+        >
+          {info.bannerName}
+        </p>
+        <p className="mt-1 text-[13px] font-bold leading-snug text-[#777777]">
+          {info.assignedText}
+        </p>
+        <p className="duo-continue-hint mt-2.5 text-xs font-black text-[#58CC02]">
+          Tap Continue for more info
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** Duo peeking from behind the top of the wheel. */
+function HidingDuo() {
+  return (
+    <div className="pointer-events-none absolute left-1/2 top-[22px] z-[1] -translate-x-1/2">
+      <Image
+        src="/duo.png"
+        alt=""
+        width={92}
+        height={92}
+        priority
+        className="h-[92px] w-[92px] object-contain object-bottom drop-shadow-[0_3px_1px_rgba(0,0,0,0.15)]"
+        aria-hidden
+      />
     </div>
   );
 }
@@ -113,7 +240,6 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
   const [spinDone, setSpinDone] = useState(false);
   const recordedRef = useRef(false);
 
-  // Persist the outcome as soon as the wheel resolves.
   useEffect(() => {
     if (!spinDone) return;
     assignTeam(assignedTeam);
@@ -123,102 +249,49 @@ export function TeamWheelScreen({ assignedTeam }: TeamWheelScreenProps) {
     }
   }, [spinDone, assignedTeam, assignTeam]);
 
-  const winner = (team: TeamId) => spinDone && assignedTeam === team;
-
   return (
-    <ScreenShell background={BACKGROUND}>
-      <div className="flex min-h-0 flex-1 flex-col items-center px-5 pt-4">
-        <h1 className="duo-rise text-center text-[25px] font-black leading-none text-white drop-shadow-[0_3px_2px_rgba(0,0,0,0.28)]">
-          Team Competition
-        </h1>
-        <p
-          className="duo-rise mt-1 text-center text-sm font-black text-white/90 drop-shadow-[0_2px_1px_rgba(0,0,0,0.2)]"
-          style={{ animationDelay: "80ms" }}
-        >
-          Check in what team you&apos;re in!
-        </p>
+    <ScreenShell background={COLORS.white} className="pt-0">
+      <WheelScreenBackground />
 
-        <div className="relative mt-3 flex items-center justify-center">
-          <span
-            className="absolute top-[42%] h-16 w-64 rounded-full bg-black/25 blur-xl"
-            aria-hidden
-          />
-          <SpinningWheel
-            assignedTeam={assignedTeam}
-            size={236}
-            onSpinComplete={() => setSpinDone(true)}
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+        <div className="shrink-0 w-full">
+          <PageTitleRibbon
+            title="Team Competition"
+            fullBleed
+            variant="green"
+            showDuo={false}
           />
         </div>
 
-        <div
-          className="duo-rise mt-3 w-full rounded-[1.35rem] border-2 border-white/20 bg-black/14 p-2.5 backdrop-blur-sm"
-          style={{ animationDelay: "140ms" }}
-        >
-          <div className="mb-2 flex items-center justify-center gap-2">
-            <span className="h-px flex-1 bg-white/25" />
-            <span className="rounded-full bg-white/16 px-3 py-0.5 text-[10px] font-black uppercase tracking-[0.16em] text-white">
-              Pick a side
-            </span>
-            <span className="h-px flex-1 bg-white/25" />
-          </div>
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          <SkyDecorations />
 
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2.5">
-            <BattleCard
-              team="red"
-              name="Junior"
-              subtitle="Red"
-              src="/eddy.png"
-              active={winner("red")}
-              dimmed={spinDone && !winner("red")}
-            />
+          <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+            <div className="relative flex min-h-0 flex-1 flex-col items-center justify-center overflow-visible px-2">
+              {spinDone && <WheelResultBanner team={assignedTeam} />}
 
-            <div className="flex flex-col items-center">
               <div
-                className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-white/40 text-base font-black text-white shadow-lg"
-                style={{
-                  background: `linear-gradient(180deg, ${COLORS.gold}, ${COLORS.goldDark})`,
-                  borderBottomWidth: 5,
-                  borderBottomColor: "rgba(0,0,0,0.18)",
-                }}
+                className="relative overflow-visible"
+                style={{ width: WHEEL_SIZE, height: WHEEL_SIZE }}
               >
-                VS
+                {!spinDone && <HidingDuo />}
+                <div className="relative z-10">
+                  <SpinningWheel
+                    assignedTeam={assignedTeam}
+                    size={WHEEL_SIZE}
+                    onSpinComplete={() => setSpinDone(true)}
+                  />
+                </div>
               </div>
-              <svg className="mt-1" width="18" height="24" viewBox="0 0 24 32" aria-hidden>
-                <path
-                  d="M13 0 2 18h7l-2 14 13-20h-8z"
-                  fill={COLORS.gold}
-                  stroke="#E6A800"
-                  strokeWidth="1"
-                />
-              </svg>
+              <WheelCharacters assignedTeam={assignedTeam} spinDone={spinDone} />
             </div>
-
-            <BattleCard
-              team="blue"
-              name="Eddy"
-              subtitle="Blue"
-              src="/junior.png"
-              active={winner("blue")}
-              dimmed={spinDone && !winner("blue")}
-            />
-          </div>
-
-          <div className="mt-2 min-h-5 text-center text-xs font-black text-white drop-shadow-[0_2px_1px_rgba(0,0,0,0.24)]">
-            {spinDone
-              ? assignedTeam === "blue"
-                ? "You're joining Team Blue."
-                : "You're joining Team Red."
-              : "The wheel will pick your team."}
           </div>
         </div>
 
-        {/* CTA in flow: disabled grey until the wheel resolves, then activates */}
-        <div className="mt-auto w-full pt-3 pb-3">
-          <div className={spinDone ? "duo-pop-in" : ""}>
-            <DuoButton onClick={goWelcome} disabled={!spinDone} className="py-3 text-base">
-              Continue
-            </DuoButton>
-          </div>
+        <div className="shrink-0 px-5 pb-5 pt-2">
+          <DuoButton onClick={goWelcome} disabled={!spinDone} className="py-3.5 text-base">
+            Continue
+          </DuoButton>
         </div>
       </div>
     </ScreenShell>

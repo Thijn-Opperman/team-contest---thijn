@@ -60,10 +60,10 @@ export const TEAMS: Record<
 > = {
   blue: {
     id: "blue",
-    mascot: "Eddy",
-    welcomeTitle: "Welcome to Eddy's Team!",
+    mascot: "Junior",
+    welcomeTitle: "Welcome to Junior's Team!",
     bannerName: "Team Blue Junior",
-    assignedText: "You're on Eddy's team.",
+    assignedText: "You're on Junior's team.",
     standingsName: "Team Blue Junior",
     color: COLORS.blue,
     colorDark: COLORS.blueDark,
@@ -71,10 +71,10 @@ export const TEAMS: Record<
   },
   red: {
     id: "red",
-    mascot: "Junior",
+    mascot: "Eddy",
     welcomeTitle: "Welcome to Eddy's Team!",
-    bannerName: "Team Red Junior",
-    assignedText: "You're on Junior's team.",
+    bannerName: "Team Red Eddy",
+    assignedText: "You're on Eddy's team.",
     standingsName: "Team Red Eddy",
     color: COLORS.red,
     colorDark: COLORS.redDark,
