@@ -1,204 +1,113 @@
 # Duolingo Team Competition
 
-Een interactief prototype voor een Duolingo-achtige teamcompetitie. Gebruikers spinnen een rad en worden toegewezen aan Team Blue of Team Red. Daarna kunnen ze hun team bekijken, de teamstanden volgen en leaderboards openen.
+An interactive prototype of a Duolingo-style team competition. Users spin a wheel to join Team Blue or Team Red, then explore their team, check standings, and open team leaderboards.
 
-## Voor wie is dit project?
+Built as a mobile-first demo — useful for showing the flow to stakeholders, teachers, or designers, and as a starting point for further development.
 
-Dit project is bedoeld voor:
+## Live demo
 
-- Stakeholders die snel willen begrijpen hoe de feature werkt.
-- Docenten/begeleiders die het concept, de flow en technische uitvoering willen beoordelen.
-- Niet-technische kijkers die de applicatie willen openen en testen.
-- Developers die lokaal verder willen bouwen.
+This project is hosted on **Vercel**.
 
-## Korte samenvatting
+**[INSERT VERCEL LINK]**
 
-De feature simuleert een Duolingo-teamcompetitie:
+> Replace the placeholder above with your production URL once deployed.
 
-1. De gebruiker start op een rustige homepagina.
-2. Via `Spin the wheel` opent het rad.
-3. Het rad wijst de gebruiker toe aan Team Blue of Team Red.
-4. De gebruiker ziet een team-welkomstscherm.
-5. Daarna kan de gebruiker teamstanden en leaderboards bekijken.
+## What it does
 
-De stijl is geïnspireerd op Duolingo: afgeronde vormen, stevige typografie, groene CTA-knoppen, kaartjes met een 3D-rand en zachte speelse kleuren.
+1. **Home** — intro screen with Duo and a “Spin the wheel” call to action.
+2. **Spin the wheel** (`/team`) — the wheel spins and assigns the user to a team.
+3. **My team** (`/team/welcome`) — welcome screen for the assigned team.
+4. **Team standings** (`/team/standings`) — side-by-side Team Blue vs Team Red scores.
+5. **Leaderboards** — separate rankings for each team.
 
-## Belangrijkste schermen
+| Screen | Route |
+|---|---|
+| Home | `/` |
+| Spin the wheel | `/team` |
+| My team | `/team/welcome` |
+| Team standings | `/team/standings` |
+| Blue leaderboard | `/team/leaderboard` |
+| Red leaderboard | `/team/leaderboard/red` |
 
-### Home
+There is also a collapsible nav menu in the top-right corner on team pages for quick jumping between screens.
 
-Een minimale startpagina met Duo en één duidelijke actie: `Spin the wheel`.
+## Tech stack
 
-### Spin the wheel
+- **Next.js 16** (App Router)
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS 4**
 
-Een visueel rad met rode en blauwe segmenten. Het rad draait automatisch en landt op het gekozen team.
+## Run it locally
 
-De toewijzing is niet puur visueel. De applicatie houdt lokaal bij hoe vaak blauw en rood zijn gekozen. Als één team minder vaak is gekozen, krijgt dat team voorrang. Als beide teams gelijk staan, kiest de app willekeurig.
-
-### Team welcome
-
-Een welkomstscherm voor het toegewezen team. Dit scherm toont de mascotte, teamnaam en korte uitleg.
-
-### Team standings
-
-Een scoreboard met de huidige XP van Team Blue en Team Red. Vanuit dit scherm kan de gebruiker ook naar het eigen team gaan.
-
-### Leaderboards
-
-Er zijn aparte leaderboards voor:
-
-- Team Blue: `/team/leaderboard`
-- Team Red: `/team/leaderboard/red`
-
-## Navigatieflow
-
-| Pagina | Route | Doel |
-|---|---|---|
-| Home | `/` | Startpagina |
-| Spin the wheel | `/team` | Teamtoewijzing |
-| My team | `/team/welcome` | Welkomstscherm van toegewezen team |
-| Team standings | `/team/standings` | Scoreboard |
-| Blue leaderboard | `/team/leaderboard` | Ranking Team Blue |
-| Red leaderboard | `/team/leaderboard/red` | Ranking Team Red |
-
-Daarnaast is er rechtsboven een uitklapmenu waarmee je snel tussen de pagina's kunt navigeren.
-
-## Designkeuzes
-
-- **Duolingo-stijl:** ronde vormen, speelse kleuren en duidelijke knoppen.
-- **Leesbaarheid:** lichte kaarten met donkere tekst waar nodig, zodat tekst niet wegvalt op drukke achtergronden.
-- **Mobiel eerst:** de applicatie is ontworpen voor een smalle mobiele viewport.
-- **Subtiele animaties:** het rad draait automatisch en UI-elementen komen rustig in beeld.
-- **Echte assets:** Duo, Eddy en Junior worden gebruikt vanuit de `public/` map.
-
-## Technische stack
-
-- Next.js 16
-- React 19
-- TypeScript
-- Tailwind CSS 4
-
-## Project starten
-
-Installeer eerst de dependencies:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Start daarna de ontwikkelserver:
+Start the dev server:
 
 ```bash
 npm run dev
 ```
 
-Open vervolgens de lokale URL die in de terminal verschijnt, meestal:
+Open [http://localhost:3000](http://localhost:3000). If port 3000 is taken, Next.js will pick another port — check the terminal output.
+
+Other useful commands:
 
 ```bash
-http://localhost:3000
+npm run build   # production build
+npm run start   # run production build locally
+npm run lint    # ESLint
 ```
 
-Als poort `3000` al bezet is, gebruikt Next.js automatisch een andere poort, bijvoorbeeld `3001`.
-
-## Testen
-
-De volgende checks zijn uitgevoerd:
-
-```bash
-npm run lint
-npm run build
-```
-
-Wat deze checks doen:
-
-- `npm run lint` controleert codekwaliteit en veelvoorkomende fouten.
-- `npm run build` controleert of de applicatie productie-klaar compileert.
-
-Laatste resultaat:
-
-- Lint: geslaagd
-- Build: geslaagd
-- Alle routes worden succesvol opgebouwd.
-
-## Assets
-
-De gebruikte afbeeldingen staan in:
+## Folder structure
 
 ```text
-public/
-  duo.png
-  eddy.png
-  junior.png
-```
-
-Deze afbeeldingen worden gebruikt voor Duo en de teammascottes.
-
-## Belangrijke bestanden
-
-```text
-app/
-  page.tsx
-  team/
-    page.tsx
+app/                          # Next.js routes and global styles
+  page.tsx                    # Home / landing page
+  team/                       # Team competition flow
+    layout.tsx                # Wraps team pages in shared shell + context
+    page.tsx                  # Spin the wheel
     welcome/page.tsx
     standings/page.tsx
     leaderboard/page.tsx
     leaderboard/red/page.tsx
 
-src/features/teamCompetition/
-  components/
-  context/
-  navigation/
-  screens/
-  constants/
+src/features/teamCompetition/ # Main feature code
+  components/                 # UI building blocks (wheel, cards, buttons, nav)
+  screens/                    # Full-screen views
+  context/TeamContext.tsx     # Shared state (team assignment, XP, leaderboards)
+  navigation/                 # Route map + navigation hook
+  constants/teamColors.ts     # Colors, team copy, shared tokens
+  hooks/
+
+public/                       # Static assets (Duo, mascots, backgrounds)
 ```
 
-## Wat is nog uitbreidbaar?
+Routes stay thin — most UI logic lives under `src/features/teamCompetition/`.
 
-Mogelijke vervolgstappen:
+## Things to know before continuing
 
-- Echte gebruikersdata koppelen aan de leaderboards.
-- XP live laten bijwerken vanuit een backend.
-- Teamtoewijzing server-side opslaan in plaats van lokaal.
-- Meer officiële Duolingo-assets toevoegen.
-- Een echte end-to-end testset toevoegen met Playwright of Cypress.
+**This is a prototype, not a full product.** Team assignment, XP, and leaderboard data are mocked. State is stored in `localStorage`, so it persists per browser but not across devices or users.
+
+**Team balancing on the wheel.** When you spin, the app slightly favours whichever team has been assigned less often on that device. If counts are equal, the result is random.
+
+**Character mapping.** Team Blue uses Junior (`junior.png`). Team Red uses Eddy (`eddy.png`). Copy in `teamColors.ts` should stay in sync with this.
+
+**Mobile-first layout.** Team pages render inside a ~420px phone frame, centred on larger screens. Design and spacing assume that width.
+
+**Next.js 16 differences.** This project uses Next.js 16, which has some API and convention changes compared to older versions. Check `node_modules/next/dist/docs/` if something feels unfamiliar.
+
+**Assets live in `public/`.** Key files: `duo.png`, `junior.png`, `eddy.png`, `wheel-hills-bg.png`, `standings-bg.png`.
+
+**No backend yet.** Natural next steps would be real user data, live XP updates, and server-side team assignment instead of local storage.
+
+## Design direction
+
+Duolingo-inspired: rounded shapes, bold type, green primary buttons, playful blue/red team colours, and light motion (wheel spin, card reveals, winner animation). The goal is clarity and energy, not pixel-perfect parity with the real app.
 
 ## Status
 
-Dit is een werkend interactief prototype. Het is geschikt om de featureflow, visuele richting en interactie te demonstreren aan stakeholders en docenten.
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Working interactive prototype — suitable for demos, reviews, and as a base to build on. Deployed via Vercel for easy sharing.
