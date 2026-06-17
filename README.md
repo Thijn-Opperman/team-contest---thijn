@@ -92,6 +92,8 @@ Routes stay thin — most UI logic lives under `src/features/teamCompetition/`.
 
 **This is a prototype, not a full product.** Team assignment, XP, and leaderboard data are mocked. State is stored in `localStorage`, so it persists per browser but not across devices or users.
 
+**Leaderboards are mocked.** The “You” row is injected into your assigned team’s leaderboard and is currently hardcoded to show rank **#64** for demo purposes.
+
 **Team balancing on the wheel.** When you spin, the app slightly favours whichever team has been assigned less often on that device. If counts are equal, the result is random.
 
 **Character mapping.** Team Blue uses Junior (`junior.png`). Team Red uses Eddy (`eddy.png`). Copy in `teamColors.ts` should stay in sync with this.

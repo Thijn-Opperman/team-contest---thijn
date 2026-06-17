@@ -4,23 +4,33 @@ import type { LeaderboardEntry } from "../context/TeamContext";
 interface LeaderboardRowProps {
   entry: LeaderboardEntry;
   accentColor?: string;
+  isCurrentUser?: boolean;
 }
 
 /** A ranked row in the leaderboard list (rank | avatar | name | xp). */
-export function LeaderboardRow({ entry, accentColor = "#1CB0F6" }: LeaderboardRowProps) {
+export function LeaderboardRow({
+  entry,
+  accentColor = "#1CB0F6",
+  isCurrentUser = entry.isCurrentUser,
+}: LeaderboardRowProps) {
   const isTopThree = entry.rank <= 3;
 
   return (
     <div
-      className="duo-lift flex items-center gap-3 rounded-2xl border-2 border-b-[4px] bg-white px-3 py-2"
+      id={isCurrentUser ? "leaderboard-you" : undefined}
+      className={`duo-lift flex items-center gap-3 rounded-2xl border-2 border-b-[4px] px-3 py-2 ${
+        isCurrentUser ? "ring-2 ring-offset-1" : "bg-white"
+      }`}
       style={{
-        borderColor: isTopThree ? `${accentColor}55` : "#E5E5E5",
-        borderBottomColor: isTopThree ? accentColor : "#D7D7D7",
+        borderColor: isCurrentUser ? accentColor : isTopThree ? `${accentColor}55` : "#E5E5E5",
+        borderBottomColor: isCurrentUser ? accentColor : isTopThree ? accentColor : "#D7D7D7",
+        background: isCurrentUser ? `${accentColor}14` : undefined,
+        ringColor: isCurrentUser ? `${accentColor}66` : undefined,
       }}
     >
       <span
         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-black text-white"
-        style={{ background: isTopThree ? accentColor : "#AFAFAF" }}
+        style={{ background: isCurrentUser || isTopThree ? accentColor : "#AFAFAF" }}
       >
         {entry.rank}
       </span>
@@ -46,11 +56,21 @@ export function LeaderboardRow({ entry, accentColor = "#1CB0F6" }: LeaderboardRo
       )}
 
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[13px] font-black text-zinc-800">
-          {entry.name}
+        <div className="flex items-center gap-1.5">
+          <div className="truncate text-[13px] font-black text-zinc-800">
+            {entry.name}
+          </div>
+          {isCurrentUser && (
+            <span
+              className="shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-white"
+              style={{ background: accentColor }}
+            >
+              You
+            </span>
+          )}
         </div>
         <div className="text-[11px] font-bold text-zinc-400">
-          {isTopThree ? "Top 3" : "Member"}
+          {isCurrentUser ? "Your rank" : isTopThree ? "Top 3" : "Member"}
         </div>
       </div>
 

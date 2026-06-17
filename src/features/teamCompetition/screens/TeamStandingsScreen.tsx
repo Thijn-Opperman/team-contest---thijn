@@ -91,9 +91,10 @@ export function TeamStandingsScreen({
 }: TeamStandingsScreenProps) {
   const ctx = useTeam();
   const {
-    exitToHome,
+    goLeaderboard,
     goWelcome,
     goWheel,
+    exitToHome,
   } = useTeamNavigation();
 
   const blueXP = blueXPProp ?? ctx.blueXP;
@@ -116,6 +117,25 @@ export function TeamStandingsScreen({
       : ctx.assignedTeam === "red"
         ? "View Team Red"
         : "Spin first";
+
+  const isAssignedLeading =
+    ctx.assignedTeam === "blue"
+      ? blueLeads
+      : ctx.assignedTeam === "red"
+        ? !blueLeads
+        : null;
+
+  const ctaLabel =
+    ctx.assignedTeam === null
+      ? "SPIN TO JOIN A TEAM"
+      : isAssignedLeading
+        ? "EARN XP TO STAY AHEAD — THEY'RE CATCHING UP"
+        : "YOU'RE BEHIND — EARN XP TO CATCH UP";
+
+  const onCtaClick = () => {
+    if (ctx.assignedTeam === null) goWheel();
+    else exitToHome();
+  };
 
   return (
     <ScreenShell background={COLORS.white} className="pt-0">
@@ -145,7 +165,7 @@ export function TeamStandingsScreen({
                 isLeading={blueLeads}
                 gapLabel={blueLeads ? undefined : `${formatXP(diff)} XP behind`}
               />
-              <div className="pointer-events-none flex self-center justify-center">
+              <div className="pointer-events-none flex h-full items-center justify-center">
                 <VsBadge />
               </div>
               <TeamCard
@@ -174,6 +194,12 @@ export function TeamStandingsScreen({
               </p>
             </div>
 
+            <div className="duo-rise mt-3" style={{ animationDelay: "220ms" }}>
+              <DuoButton onClick={onCtaClick} className="py-3 text-sm">
+                {ctaLabel}
+              </DuoButton>
+            </div>
+
             <p
               className="duo-rise mt-3 text-center text-xs font-black uppercase tracking-[0.14em] text-[#777777]"
               style={{ animationDelay: "260ms" }}
@@ -192,8 +218,8 @@ export function TeamStandingsScreen({
               >
                 {assignedLabel}
               </DuoButton>
-              <DuoButton onClick={exitToHome} className="py-3.5 text-base">
-                Continue Learning
+              <DuoButton onClick={goLeaderboard} className="py-3.5 text-base">
+                CONTINUE
               </DuoButton>
             </div>
           </div>

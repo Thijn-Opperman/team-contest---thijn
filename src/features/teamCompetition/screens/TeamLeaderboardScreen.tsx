@@ -1,8 +1,12 @@
 "use client";
 
-import { COLORS, type TeamId } from "../constants/teamColors";
+import { useEffect } from "react";
+import { COLORS, formatXP, type TeamId } from "../constants/teamColors";
 import { useTeam, type LeaderboardEntry } from "../context/TeamContext";
 import { useTeamNavigation } from "../navigation/TeamCompetitionNavigator";
+import {
+  buildLeaderboardDisplay,
+} from "../utils/leaderboardUtils";
 import { DuoButton } from "../components/DuoButton";
 import { LeaderboardRow } from "../components/LeaderboardRow";
 import { PodiumRow } from "../components/PodiumRow";
@@ -21,12 +25,18 @@ export function TeamLeaderboardScreen({
   const { exitToHome } = useTeamNavigation();
 
   const isRed = team === "red";
-  const data = dataProp ?? (isRed ? ctx.redLeaderboardData : ctx.leaderboardData);
-  const byRank = [...data].sort((a, b) => a.rank - b.rank);
-  const first = byRank.find((e) => e.rank === 1);
-  const second = byRank.find((e) => e.rank === 2);
-  const third = byRank.find((e) => e.rank === 3);
-  const totalXP = byRank.reduce((sum, entry) => sum + entry.xp, 0);
+  const rawData = dataProp ?? (isRed ? ctx.redLeaderboardData : ctx.leaderboardData);
+  const display = buildLeaderboardDisplay(rawData, team, ctx.assignedTeam);
+  const currentUserEntry = display.currentUser;
+  const isYourTeam = ctx.assignedTeam === team;
+
+  const first = display.top.find((e) => e.rank === 1);
+  const second = display.top.find((e) => e.rank === 2);
+  const third = display.top.find((e) => e.rank === 3);
+  const totalLearners = rawData.length + (isYourTeam ? 1 : 0);
+  const totalXP =
+    rawData.reduce((sum, entry) => sum + entry.xp, 0) +
+    (isYourTeam && currentUserEntry ? currentUserEntry.xp : 0);
 
   const accent = isRed ? COLORS.red : COLORS.blue;
   const accentDark = isRed ? COLORS.redDark : COLORS.blueDark;
@@ -37,9 +47,19 @@ export function TeamLeaderboardScreen({
     linear-gradient(180deg, ${accent} 0%, ${accentDark} 58%, ${listBg} 58%, ${listBg} 100%)
   `;
 
+  useEffect(() => {
+    if (!currentUserEntry) return;
+    const id = window.requestAnimationFrame(() => {
+      document
+        .getElementById("leaderboard-you")
+        ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [currentUserEntry, team]);
+
   return (
     <ScreenShell background={background}>
-      <div className="flex h-full min-h-0 flex-col px-5 pt-7">
+      <div className="flex h-full min-h-0 flex-col overflow-y-auto px-5 pt-7">
         <div className="duo-rise text-center">
           <div
             className="mx-auto inline-flex items-center rounded-full bg-white/18 px-4 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white"
@@ -55,7 +75,7 @@ export function TeamLeaderboardScreen({
           </p>
         </div>
 
-        <div className="relative mt-5 h-[158px] w-full">
+        <div className="relative mt-5 h-[158px] w-full shrink-0">
           <div
             className="absolute bottom-0 left-1/2 h-[56px] w-[82%] -translate-x-1/2 rounded-t-[1.75rem] border-2 border-white/20 bg-white/14 shadow-inner"
             aria-hidden
@@ -83,7 +103,7 @@ export function TeamLeaderboardScreen({
         </div>
 
         <div
-          className="duo-rise mt-2 grid grid-cols-2 gap-3"
+          className="duo-rise mt-2 grid shrink-0 grid-cols-2 gap-3"
           style={{ animationDelay: "160ms" }}
         >
           <div className="rounded-2xl border-2 border-[#E5E5E5] bg-white px-4 py-2">
@@ -102,17 +122,17 @@ export function TeamLeaderboardScreen({
           </div>
         </div>
 
-        <div className="duo-rise mt-3 rounded-3xl border-2 border-[#E5E5E5] bg-white p-3 shadow-lg">
+        <div className="duo-rise mt-3 shrink-0 rounded-3xl border-2 border-[#E5E5E5] bg-white p-3 shadow-lg">
           <div className="mb-3 flex items-center justify-between px-1">
             <span className="text-sm font-black text-[#4B4B4B]">
               Rankings
             </span>
             <span className="text-xs font-black uppercase tracking-wide" style={{ color: accent }}>
-              {byRank.length} learners
+              {totalLearners} learners
             </span>
           </div>
           <div className="space-y-1.5">
-            {byRank.map((entry, i) => (
+            {display.top.map((entry, i) => (
               <div
                 key={`${entry.rank}-${entry.name}`}
                 className="duo-rise"
@@ -121,10 +141,18 @@ export function TeamLeaderboardScreen({
                 <LeaderboardRow entry={entry} accentColor={accent} />
               </div>
             ))}
+            {isYourTeam && currentUserEntry && (
+              <div
+                className="duo-rise pt-1.5"
+                style={{ animationDelay: `${500 + display.top.length * 70}ms` }}
+              >
+                <LeaderboardRow entry={currentUserEntry} accentColor={accent} />
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="mt-auto pt-3 pb-4">
+        <div className="mt-auto shrink-0 pt-3 pb-4">
           <DuoButton onClick={exitToHome}>Continue Learning</DuoButton>
         </div>
       </div>

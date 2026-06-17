@@ -16,6 +16,8 @@ export interface LeaderboardEntry {
   name: string;
   avatarUrl?: string | null;
   xp: number;
+  /** Marks the signed-in learner on their team leaderboard. */
+  isCurrentUser?: boolean;
 }
 
 export interface TeamState {
