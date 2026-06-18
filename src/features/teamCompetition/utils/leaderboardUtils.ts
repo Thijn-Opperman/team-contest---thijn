@@ -3,8 +3,8 @@ import type { LeaderboardEntry } from "../context/TeamContext";
 
 /** Mock weekly XP for the signed-in learner on each team. */
 const CURRENT_USER_XP: Record<TeamId, number> = {
-  blue: 5280,
-  red: 5480,
+  blue: 3890,
+  red: 3890,
 };
 
 export const CURRENT_USER_NAME = "You";

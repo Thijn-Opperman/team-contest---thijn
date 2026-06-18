@@ -19,13 +19,13 @@ export function LeaderboardRow({
     <div
       id={isCurrentUser ? "leaderboard-you" : undefined}
       className={`duo-lift flex items-center gap-3 rounded-2xl border-2 border-b-[4px] px-3 py-2 ${
-        isCurrentUser ? "ring-2 ring-offset-1" : "bg-white"
+        isCurrentUser ? "" : "bg-white"
       }`}
       style={{
         borderColor: isCurrentUser ? accentColor : isTopThree ? `${accentColor}55` : "#E5E5E5",
         borderBottomColor: isCurrentUser ? accentColor : isTopThree ? accentColor : "#D7D7D7",
         background: isCurrentUser ? `${accentColor}14` : undefined,
-        ringColor: isCurrentUser ? `${accentColor}66` : undefined,
+        boxShadow: isCurrentUser ? `0 0 0 2px ${accentColor}66` : undefined,
       }}
     >
       <span
